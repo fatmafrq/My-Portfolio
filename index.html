@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatma Avina Farooqui - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background: linear-gradient(135deg, #f5deb3 0%, #f5e6d3 50%, #fef3e2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background Doodles */
+        .doodles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .doodle {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+            font-size: 24px;
+        }
+
+        .doodle-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .doodle-2 { top: 30%; right: 15%; animation-delay: 0.5s; }
+        .doodle-3 { bottom: 20%; left: 20%; animation-delay: 1s; }
+        .doodle-4 { bottom: 10%; right: 10%; animation-delay: 1.5s; }
+
+        /* Music Toggle */
+        .music-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            background: #fef3e2;
+            padding: 12px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 2px solid #d97706;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            max-width: 400px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid #d97706;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: capitalize;
+            background: #fef3e2;
+            color: #92400e;
+        }
+
+        .nav-tab:hover {
+            background: #fed7aa;
+        }
+
+        .nav-tab.active {
+            background: #d97706;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: scale(1.05);
+        }
+
+        /* Page Sections */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 32px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* Cover Page */
+        .cover-container {
+            position: relative;
+        }
+
+        .sticker {
+            position: absolute;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        .sticker-1 { top: -32px; left: -32px; font-size: 32px; color: #d97706; }
+        .sticker-2 { top: -24px; right: -24px; font-size: 28px; animation-delay: 0.3s; color: #ea580c; }
+        .sticker-3 { bottom: -24px; left: -24px; font-size: 24px; animation-delay: 0.6s; color: #ca8a04; }
+
+        .cover-card {
+            background: #fef3e2;
+            padding: 48px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 4px solid #d97706;
+            position: relative;
+            min-width: 400px;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,0,0,0.03) 30px, rgba(0,0,0,0.03) 31px);
+            transition: transform 0.3s;
+        }
+
+        .cover-card:hover {
+            transform: scale(1.05);
+        }
+
+        .tape {
+            position: absolute;
+            height: 16px;
+            opacity: 0.4;
+        }
+
+        .tape-1 {
+            top: 16px;
+            left: 16px;
+            width: 64px;
+            background: #ca8a04;
+            transform: rotate(-2deg);
+        }
+
+        .tape-2 {
+            bottom: 16px;
+            right: 16px;
+            width: 80px;
+            background: #92400e;
+            transform: rotate(3deg);
+        }
+
+        .cover-title {
+            font-size: 60px;
+            font-weight: bold;
+            text-align: center;
+            color: #78350f;
+            margin-bottom: 16px;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .cover-subtitle {
+            text-align: center;
+            color: #92400e;
+            font-size: 20px;
+            margin-bottom: 32px;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: bounce 1s infinite;
+        }
+
+        .dot-1 { background: #d97706; animation-delay: 0s; }
+        .dot-2 { background: #ea580c; animation-delay: 0.1s; }
+        .dot-3 { background: #ca8a04; animation-delay: 0.2s; }
+
+        .open-btn {
+            width: 100%;
+            background: linear-gradient(to right, #d97706, #ea580c);
+            color: white;
+            padding: 16px;
+            border-radius: 30px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .open-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* About Page */
+        .about-container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .about-card {
+            background: #fef3e2;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: rotate(-0.5deg);
+            position: relative;
+            border: 2px solid #d97706;
+        }
+
+        .washi-tape {
+            position: absolute;
+            height: 24px;
+            opacity: 0.5;
+            top: -12px;
+        }
+
+        .washi-1 {
+            left: 80px;
+            width: 128px;
+            background: #fbbf24;
+            transform: rotate(-2deg);
+        }
+
+        .washi-2 {
+            right: 80px;
+            width: 160px;
+            background: #fb923c;
+            transform: rotate(1deg);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .polaroid {
+            position: relative;
+        }
+
+        .polaroid-frame {
+            background: white;
+            padding: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: rotate(-3deg);
+            transition: transform 0.3s;
+            border: 2px solid #d97706;
+        }
+
+        .polaroid-frame:hover {
+            transform: rotate(0deg);
+        }
+
+        .polaroid-img {
+            width: 100%;
+            height: 256px;
+            background: linear-gradient(135deg, #fde68a, #fed7aa);
+            border-radius: 4px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+
+        .polaroid-caption {
+            text-align: center;
+            color: #92400e;
+        }
+
+        .pin {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #92400e;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about-text h2 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 16px;
+        }
+
+        .about-text p {
+            color: #92400e;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .sticky-notes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .sticky-note {
+            background: #fef3c7;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            font-size: 14px;
+            color: #78350f;
+            border: 1px solid #fbbf24;
+        }
+
+        .sticky-note:nth-child(odd) {
+            transform: rotate(-2deg);
+        }
+
+        .sticky-note:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .sticky-note:hover {
+            transform: scale(1.1) rotate(0deg);
+        }
+
+        /* Experience Page */
+        .experience-container {
+            max-width: 1200px;
+            width: 100%;
+            padding-top: 80px;
+        }
+
+        .experience-title {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: #78350f;
+            margin-bottom: 48px;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .experience-card-wrapper {
+            position: relative;
+        }
+
+        .experience-tape {
+            position: absolute;
+            top: -16px;
+            left: 25%;
+            width: 80px;
+            height: 24px;
+            background: #ca8a04;
+            opacity: 0.5;
+            transform: rotate(-12deg);
+        }
+
+        .experience-card {
+            background: #fef3e2;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border: 2px solid #d97706;
+        }
+
+        .experience-card:nth-child(3n+1) {
+            transform: rotate(-1deg);
+        }
+
+        .experience-card:nth-child(3n+2) {
+            transform: rotate(1deg);
+        }
+
+        .experience-card:hover {
+            transform: scale(1.05) rotate(0deg);
+        }
+
+        .experience-img {
+            width: 100%;
+            height: 192px;
+            background: linear-gradient(135deg, #fde68a, #fdba74, #fef3c7);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .experience-title-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 8px;
+        }
+
+        .experience-desc {
+            color: #92400e;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .experience-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: #fde68a;
+            color: #78350f;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #fbbf24;
+        }
+
+        .paperclip {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 32px;
+            border: 2px solid #92400e;
+            border-radius: 50%;
+        }
+
+        /* Achievements Page */
+        .achievements-container {
+            max-width: 1000px;
+            width: 100%;
+            padding-top: 80px;
+        }
+
+        .achievements-title {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: #78350f;
+            margin-bottom: 48px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+
+        .achievement-wrapper {
+            position: relative;
+        }
+
+        .achievement-pin {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: #92400e;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .achievement-card {
+            background: #fef3e2;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border: 4px solid #fbbf24;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .achievement-card:hover {
+            transform: scale(1.1);
+        }
+
+        .achievement-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .achievement-title {
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 8px;
+        }
+
+        .achievement-org {
+            font-size: 14px;
+            color: #92400e;
+        }
+
+        /* Contact Page */
+        .contact-container {
+            max-width: 600px;
+            width: 100%;
+            padding-top: 80px;
+        }
+
+        .contact-title {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: #78350f;
+            margin-bottom: 48px;
+        }
+
+        .postcard {
+            background: #fef3e2;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 4px dashed #fbbf24;
+            position: relative;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 64px;
+            height: 64px;
+            border: 2px solid #92400e;
+            background: #fed7aa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .contact-text {
+            color: #92400e;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-size: 18px;
+        }
+
+        .contact-email {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #fed7aa;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: 1px solid #fbbf24;
+        }
+
+        .contact-email:hover {
+            background: #fdba74;
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            background: #fed7aa;
+            border: 1px solid #fbbf24;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1);
+            background: #fdba74;
+        }
+
+        .social-icon {
+            font-size: 24px;
+        }
+
+        .social-label {
+            font-size: 12px;
+            color: #92400e;
+        }
+
+        .postcard-tape {
+            position: absolute;
+            height: 24px;
+            opacity: 0.5;
+            bottom: -12px;
+        }
+
+        .postcard-tape-1 {
+            left: 40px;
+            width: 128px;
+            background: #fb923c;
+            transform: rotate(2deg);
+        }
+
+        .postcard-tape-2 {
+            right: 40px;
+            width: 128px;
+            background: #fbbf24;
+            transform: rotate(-2deg);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cover-card {
+                min-width: auto;
+                padding: 32px;
+            }
+
+            .cover-title {
+                font-size: 40px;
+            }
+
+            .experience-title,
+            .achievements-title,
+            .contact-title {
+                font-size: 36px;
+            }
+
+            .nav-tabs {
+                max-width: calc(100% - 80px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Background Doodles -->
+        <div class="doodles">
+            <div class="doodle doodle-1">⭐</div>
+            <div class="doodle doodle-2">❤️</div>
+            <div class="doodle doodle-3">✨</div>
+            <div class="doodle doodle-4">⭐</div>
+        </div>
+
+        <!-- Music Toggle -->
+        <div class="music-toggle" onclick="toggleMusic()">
+            <span id="music-icon">🔇</span>
+        </div>
+
+        <!-- Navigation Tabs (hidden on cover) -->
+        <div class="nav-tabs" id="nav-tabs" style="display: none;">
+            <button class="nav-tab" onclick="navigateTo('about')">about</button>
+            <button class="nav-tab" onclick="navigateTo('experience')">experience</button>
+            <button class="nav-tab" onclick="navigateTo('achievements')">achievements</button>
+            <button class="nav-tab" onclick="navigateTo('contact')">contact</button>
+        </div>
+
+        <!-- Cover Page -->
+        <div class="page active" id="cover-page">
+            <div class="cover-container">
+                <span class="sticker sticker-1">⭐</span>
+                <span class="sticker sticker-2">❤️</span>
+                <span class="sticker sticker-3">✨</span>
+
+                <div class="cover-card">
+                    <div class="tape tape-1"></div>
+                    <div class="tape tape-2"></div>
+
+                    <h1 class="cover-title">Fatma Avina Farooqui</h1>
+                    <p class="cover-subtitle">Data Science Student & Leader</p>
+
+                    <div class="dots">
+                        <div class="dot dot-1"></div>
+                        <div class="dot dot-2"></div>
+                        <div class="dot dot-3"></div>
+                    </div>
+
+                    <button class="open-btn" onclick="navigateTo('about')">Open Scrapbook ✨</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div class="page" id="about-page">
+            <div class="about-container">
+                <div class="about-card">
+                    <div class="washi-tape washi-1"></div>
+                    <div class="washi-tape washi-2"></div>
+
+                    <div class="about-grid">
+                        <div class="polaroid">
+                            <div class="pin"></div>
+                            <div class="polaroid-frame">
+                                <!-- REPLACE THIS: Add your profile photo here -->
+                                <img src="./images/mypic.jpg" style="width: 100%; height: 256px; object-fit: cover; border-radius: 4px; margin-bottom: 12px;" alt="Fatma Avina Farooqui"> 
+                                <!-- Option 2: Keep emoji as placeholder 
+                                <div class="polaroid-img">👩‍🎓</div> -->
+                                <p class="polaroid-caption">Fatma Avina Farooqui</p>
+                            </div>
+                        </div>
+
+                        <div class="about-text">
+                            <h2>About Me</h2>
+                            <p>I am a Second Year B.Tech Data Science student with leadership, research, and communication skills. Passionate about learning, teamwork and making an impactful initiative approach. Eager to be a part to appreciate and motivate the creatives with a positive approach.</p>
+
+                            <div class="sticky-notes">
+                                <div class="sticky-note">💼 Leadership Expert</div>
+                                <div class="sticky-note">🎤 Public Speaker</div>
+                                <div class="sticky-note">🎯 Event Coordinator</div>
+                                <div class="sticky-note">📱 Social Media Pro</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Page -->
+        <div class="page" id="experience-page">
+            <div class="experience-container">
+                <h2 class="experience-title">My Experience 📚</h2>
+                <div class="experience-grid">
+                    <div class="experience-card-wrapper">
+                        <div class="experience-tape"></div>
+                        <div class="paperclip"></div>
+                        <div class="experience-card">
+                            <!-- REPLACE THIS: Add project/experience image -->
+                            <img src="./images/sc.jpg" style="width: 100%; height: 192px; object-fit: cover; border-radius: 8px; margin-bottom: 16px;" alt="Student Council"> 
+                         <!--   <div class="experience-img">🎓</div> -->
+                            <h3 class="experience-title-text">Student Council Leadership</h3>
+                            <p class="experience-desc">Organized major college events (Acanres Illusion) and coordinated with faculty for overall betterment</p>
+                            <div class="experience-tags">
+                                <span class="tag">Event Planning</span>
+                                <span class="tag">Leadership</span>
+                                <span class="tag">Coordination</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="experience-card-wrapper">
+                        <div class="experience-tape"></div>
+                        <div class="paperclip"></div>
+                        <div class="experience-card">
+                            <!-- REPLACE THIS: Add project/experience image -->
+                            <img src="./images/acm.jpg" style="width: 100%; height: 192px; object-fit: cover; border-radius: 8px; margin-bottom: 16px;" alt="Technical Workshop"> 
+                         <!--  <div class="experience-img">💻</div> -->
+                            <h3 class="experience-title-text">Technical Workshop Management</h3>
+                            <p class="experience-desc">Collaborated with teams to organize and manage technical workshops and seminars at ACM-W</p>
+                            <div class="experience-tags">
+                                <span class="tag">Team Collaboration</span>
+                                <span class="tag">Event Management</span>
+                                <span class="tag">Technical</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="experience-card-wrapper">
+                        <div class="experience-tape"></div>
+                        <div class="paperclip"></div>
+                        <div class="experience-card">
+                            <!-- REPLACE THIS: Add project/experience image -->
+                            <img src="./images/innovari.jpg" style="width: 100%; height: 192px; object-fit: cover; border-radius: 8px; margin-bottom: 16px;" alt="Marketing PR"> 
+                          <!--  <div class="experience-img">📢</div> -->
+                            <h3 class="experience-title-text">Digital Marketing & PR</h3>
+                            <p class="experience-desc">Led event participation and creative outreach efforts, promoting events across departments</p>
+                            <div class="experience-tags">
+                                <span class="tag">Marketing</span>
+                                <span class="tag">Social Media</span>
+                                <span class="tag">Public Relations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Page -->
+        <div class="page" id="achievements-page">
+            <div class="achievements-container">
+                <h2 class="achievements-title">Leadership & Roles 🏆</h2>
+                <div class="achievements-grid">
+                    <div class="achievement-wrapper">
+                        <div class="achievement-pin"></div>
+                        <div class="achievement-card">
+                            <div class="achievement-icon">🎖️</div>
+                            <h3 class="achievement-title">Student Council President</h3>
+                            <p class="achievement-org">Aug 2024 - June 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="achievement-wrapper">
+                        <div class="achievement-pin"></div>
+                        <div class="achievement-card">
+                            <div class="achievement-icon">🎖️</div>
+                            <h3 class="achievement-title">Technical Executive</h3>
+                            <p class="achievement-org">ACM-W Student Chapter</p>
+                        </div>
+                    </div>
+
+                    <div class="achievement-wrapper">
+                        <div class="achievement-pin"></div>
+                        <div class="achievement-card">
+                            <div class="achievement-icon">🎖️</div>
+                            <h3 class="achievement-title">Marketing & PR Member</h3>
+                            <p class="achievement-org">Innovari Mentoring Hub</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div class="page" id="contact-page">
+            <div class="contact-container">
+                <h2 class="contact-title">Let's Connect! 💌</h2>
+                <div class="postcard">
+                    <div class="stamp">📮</div>
+
+                    <p class="contact-text">I'd love to hear from you! Whether it's about a project, collaboration, or just to say hi. Feel free to reach out!</p>
+
+                    <div class="contact-email">
+                        <span style="font-size: 24px;">📧</span>
+                        <span>fatmafarooqui09@gmail.com</span>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/fatma-farooqui-99252b335?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-link">
+                            <div class="social-icon">💼</div>
+                            <div class="social-label">LinkedIn</div>
+                        </a>
+                        <a href="https://github.com/fatmafrq" target="_blank" class="social-link">
+                            <div class="social-icon">🐙</div>
+                            <div class="social-label">GitHub</div>
+                        </a>
+                    </div>
+
+                    <div class="postcard-tape postcard-tape-1"></div>
+                    <div class="postcard-tape postcard-tape-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 'cover';
+        let musicOn = false;
+
+        function navigateTo(page) {
+            // Hide current page
+            document.getElementById(currentPage + '-page').classList.remove('active');
+            
+            // Show new page
+            currentPage = page;
+            document.getElementById(page + '-page').classList.add('active');
+            
+            // Show/hide navigation
+            const navTabs = document.getElementById('nav-tabs');
+            if (page === 'cover') {
+                navTabs.style.display = 'none';
+            } else {
+                navTabs.style.display = 'flex';
+                
+                // Update active tab
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                const activeButton = Array.from(document.querySelectorAll('.nav-tab')).find(
+                    btn => btn.textContent.trim() === page
+                );
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+            }
+        }
+
+        function toggleMusic() {
+            musicOn = !musicOn;
+            document.getElementById('music-icon').textContent = musicOn ? '🔊' : '🔇';
+        }
+    </script>
+</body>
+</html>
